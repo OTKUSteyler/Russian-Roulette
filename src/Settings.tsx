@@ -1,19 +1,16 @@
-import { useState } from "react";
-import { playRoulette } from "./Settings";
 import { Forms } from "@vendetta/ui/components";
+import { playRoulette } from "./index";
 
 const { FormSection, FormRow, FormText } = Forms;
 
-export default () => {
-    const [result, setResult] = useState("");
-
-    return (
-        <FormSection title="Russian Roulette">
-            <FormRow
-                label="Play Plugin Roulette"
-                onPress={() => setResult(playRoulette())}
-            />
-            {result ? <FormText>{result}</FormText> : null}
-        </FormSection>
-    );
-};
+export default () => (
+    <FormSection title="Russian Roulette Settings">
+        <FormRow
+            label="Play Plugin Roulette"
+            onPress={playRoulette}
+        />
+        <FormText>
+            Press "Play Plugin Roulette" to randomly remove an installed plugin.
+        </FormText>
+    </FormSection>
+);
