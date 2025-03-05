@@ -1,5 +1,5 @@
 import { Forms } from "@vendetta/ui/components";
-import { playRoulette } from "./index";
+import { playRoulette } from "./Settings";
 
 const { FormSection, FormRow, FormText } = Forms;
 
