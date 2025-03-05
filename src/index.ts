@@ -1,43 +1,33 @@
 import { storage } from "@vendetta/plugin";
-import { showToast } from "@vendetta/ui/toasts";
-import { removePlugin, listPlugins } from "@vendetta/plugins";
-import { showConfirmationAlert } from "@vendetta/ui/alerts";
+import settings from "./Settings";
 
-// Function to roll the dice and possibly remove a plugin
-const playRussianRoulette = () => {
-    const plugins = Object.keys(listPlugins()); // Get installed plugins
-    if (plugins.length <= 1) {
-        showToast("Not enough plugins to play!", { type: "error" });
-        return;
+// Function to get installed plugins
+const getInstalledPlugins = () => Object.keys(vendetta.plugins.plugins);
+
+// Russian Roulette Logic
+const playRoulette = () => {
+    const plugins = getInstalledPlugins();
+    if (plugins.length === 0) {
+        console.log("[Roulette] No plugins to remove.");
+        return "No plugins installed.";
     }
 
-    const luckyNumber = Math.floor(Math.random() * 6) + 1; // Roll a number 1-6
+    // Roll a number
+    const roll = Math.floor(Math.random() * plugins.length);
+    const chosenPlugin = plugins[roll];
 
-    if (luckyNumber === 6) {
-        showToast("You're lucky! No plugin removed.", { type: "success" });
-    } else {
-        const randomPlugin = plugins[Math.floor(Math.random() * plugins.length)];
-        showConfirmationAlert(
-            "Russian Roulette",
-            `You rolled a ${luckyNumber}. The plugin "${randomPlugin}" will be removed!`,
-            () => {
-                removePlugin(randomPlugin);
-                showToast(`Plugin "${randomPlugin}" removed!`, { type: "danger" });
-            },
-            "Proceed",
-            "Cancel"
-        );
-    }
+    // Delete the chosen plugin
+    vendetta.plugins.uninstallPlugin(chosenPlugin);
+    console.log(`[Roulette] Removed plugin: ${chosenPlugin}`);
+    return `Removed plugin: ${chosenPlugin}`;
 };
 
-// Plugin start and stop logic
 export const onLoad = () => {
-    showToast("Russian Roulette Plugin Loaded!", { type: "info" });
+    console.log("Russian Roulette Plugin Loaded!");
 };
 
 export const onUnload = () => {
-    showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
+    console.log("Russian Roulette Plugin Unloaded!");
 };
 
-// Export the function so you can trigger it from the settings UI
-export { playRussianRoulette };
+export { settings, playRoulette };
