@@ -1,6 +1,6 @@
 {
     "name": "Russian-Roulette",
-    "description": "A plugin for use as a template.",
+    "description": "Roll a random number. If the number is unlucky, remove a randomly chosen plugin. If lucky, keep all plugins and allow another roll.",
     "authors": [
         {
             "name": "btmc727",
