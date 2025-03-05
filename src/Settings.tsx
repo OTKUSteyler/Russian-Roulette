@@ -1,21 +1,19 @@
 import { useState } from "react";
-import { View, Text, Button } from "@vendetta/metro/common";
-import { playRussianRoulette } from "./index";
+import { playRoulette } from "./index";
+import { Forms } from "@vendetta/ui/components";
 
-const Settings = () => {
-    const [lastRoll, setLastRoll] = useState(null);
+const { FormSection, FormRow, FormText } = Forms;
 
-    const handleRoll = () => {
-        playRussianRoulette();
-        setLastRoll(Date.now()); // Refresh UI when rolled
-    };
+export default () => {
+    const [result, setResult] = useState("");
 
     return (
-        <View>
-            <Text>Press the button to play Russian Roulette with your plugins.</Text>
-            <Button text="Roll the Dice!" onPress={handleRoll} />
-        </View>
+        <FormSection title="Russian Roulette">
+            <FormRow
+                label="Play Plugin Roulette"
+                onPress={() => setResult(playRoulette())}
+            />
+            {result ? <FormText>{result}</FormText> : null}
+        </FormSection>
     );
 };
-
-export default Settings;
