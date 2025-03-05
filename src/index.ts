@@ -1,30 +1,41 @@
 import { registerSettings } from "@vendetta/settings";
-import Settings from "./Settings"; // Make sure it's capitalized
 import { storage } from "@vendetta/plugin";
-import { findByProps } from "@vendetta/metro";
 import { showToast } from "@vendetta/ui/toasts";
+import { findByProps } from "@vendetta/metro";
+import Settings from "./Settings";
 
-let MessageActions: any;
-
-// Plugin initialization
 export function onLoad() {
     registerSettings("Russian Roulette", Settings);
+}
 
-    console.log("[Russian Roulette] Loading...");
+export function onUnload() {
+    showToast("Russian Roulette Unloaded!", { type: "info" });
+}
 
-    // Try to find message acknowledgment functions
-    MessageActions = findByProps("ack", "ackMessage", "markRead");
+// Russian Roulette Functionality
+export function playRoulette() {
+    const PluginManager = findByProps("removePlugin", "getPlugins");
 
-    if (!MessageActions) {
-        console.error("[Russian Roulette] No message acknowledgment functions found.");
-        showToast("Error: No valid message functions found!", { type: "danger" });
+    if (!PluginManager) {
+        showToast("Error: Plugin manager not found!", { type: "danger" });
         return;
     }
 
-    console.log("[Russian Roulette] Plugin loaded successfully.");
-}
+    const plugins = Object.keys(PluginManager.getPlugins());
 
-// Plugin unload cleanup
-export function onUnload() {
-    console.log("[Russian Roulette] Unloaded.");
+    if (plugins.length <= 1) {
+        showToast("No plugins available to remove!", { type: "warning" });
+        return;
+    }
+
+    const randomIndex = Math.floor(Math.random() * plugins.length);
+    const chosenPlugin = plugins[randomIndex];
+
+    if (!chosenPlugin) {
+        showToast("No plugin selected. Try again!", { type: "warning" });
+        return;
+    }
+
+    PluginManager.removePlugin(chosenPlugin);
+    showToast(`🔥 Russian Roulette removed: ${chosenPlugin}!`, { type: "danger" });
 }
