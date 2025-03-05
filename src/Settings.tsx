@@ -1,16 +1,22 @@
-import { Forms } from "@vendetta/ui/components";
-import { playRoulette } from "./Settings";
+import { useState } from "react";
+import { View, Text } from "@vendetta/metro/common";
+import { Switch } from "@vendetta/ui/components";
+import { storage } from "@vendetta/plugin";
 
-const { FormSection, FormRow, FormText } = Forms;
+export default function Settings() {
+    const [isEnabled, setIsEnabled] = useState(storage.enableRoulette ?? true);
 
-export default () => (
-    <FormSection title="Russian Roulette Settings">
-        <FormRow
-            label="Play Plugin Roulette"
-            onPress={playRoulette}
-        />
-        <FormText>
-            Press "Play Plugin Roulette" to randomly remove an installed plugin.
-        </FormText>
-    </FormSection>
-);
+    const togglePlugin = () => {
+        setIsEnabled(!isEnabled);
+        storage.enableRoulette = !isEnabled;
+    };
+
+    return (
+        <View style={{ padding: 10 }}>
+            <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10 }}>
+                Enable Russian Roulette:
+            </Text>
+            <Switch value={isEnabled} onValueChange={togglePlugin} />
+        </View>
+    );
+}
