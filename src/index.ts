@@ -1,11 +1,10 @@
-import { registerSettings, unregisterSettings } from "@vendetta/settings";
+import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
 import { showConfirmationAlert } from "@vendetta/ui/alerts";
-import Settings from "./Settings";
 
-// Russian Roulette function
-const playRussianRoulette = () => {
+// Function to roll the dice and possibly remove a plugin
+export const playRoulette = () => {  // ✅ Ensure it's exported
     const plugins = Object.keys(listPlugins()); // Get installed plugins
     if (plugins.length <= 1) {
         showToast("Not enough plugins to play!", { type: "error" });
@@ -31,26 +30,11 @@ const playRussianRoulette = () => {
     }
 };
 
-// Load Plugin
+// Plugin start and stop logic
 export const onLoad = () => {
-    try {
-        registerSettings("RussianRoulette", Settings);
-        showToast("Russian Roulette Plugin Loaded!", { type: "info" });
-    } catch (err) {
-        console.error("Error loading settings:", err);
-        showToast("Error loading settings!", { type: "error" });
-    }
+    showToast("Russian Roulette Plugin Loaded!", { type: "info" });
 };
 
-// Unload Plugin
 export const onUnload = () => {
-    try {
-        unregisterSettings("RussianRoulette");
-        showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
-    } catch (err) {
-        console.error("Error unloading settings:", err);
-    }
+    showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 };
-
-// Export function to settings
-export { playRussianRoulette };
