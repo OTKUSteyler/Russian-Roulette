@@ -2,16 +2,17 @@ import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
 import { showConfirmationAlert } from "@vendetta/ui/alerts";
+import Settings from "./Settings"; // ✅ Import Settings
 
 // Function to roll the dice and possibly remove a plugin
-export const playRoulette = () => {  // ✅ Ensure it's exported
-    const plugins = Object.keys(listPlugins()); // Get installed plugins
+export const playRoulette = () => {
+    const plugins = Object.keys(listPlugins());
     if (plugins.length <= 1) {
         showToast("Not enough plugins to play!", { type: "error" });
         return;
     }
 
-    const luckyNumber = Math.floor(Math.random() * 6) + 1; // Roll a number 1-6
+    const luckyNumber = Math.floor(Math.random() * 6) + 1;
 
     if (luckyNumber === 6) {
         showToast("You're lucky! No plugin removed.", { type: "success" });
@@ -38,3 +39,6 @@ export const onLoad = () => {
 export const onUnload = () => {
     showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 };
+
+// ✅ Register Settings
+export { playRoulette, Settings };
