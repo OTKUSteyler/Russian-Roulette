@@ -1,36 +1,43 @@
-import { registerSettings, unregisterSettings } from "@vendetta/settings";
-import Settings from "./Settings";
-import { findByProps } from "@vendetta/metro";
+import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
+import { removePlugin, listPlugins } from "@vendetta/plugins";
+import { showConfirmationAlert } from "@vendetta/ui/alerts";
 
+// Function to roll the dice and possibly remove a plugin
+const playRussianRoulette = () => {
+    const plugins = Object.keys(listPlugins()); // Get installed plugins
+    if (plugins.length <= 1) {
+        showToast("Not enough plugins to play!", { type: "error" });
+        return;
+    }
+
+    const luckyNumber = Math.floor(Math.random() * 6) + 1; // Roll a number 1-6
+
+    if (luckyNumber === 6) {
+        showToast("You're lucky! No plugin removed.", { type: "success" });
+    } else {
+        const randomPlugin = plugins[Math.floor(Math.random() * plugins.length)];
+        showConfirmationAlert(
+            "Russian Roulette",
+            `You rolled a ${luckyNumber}. The plugin "${randomPlugin}" will be removed!`,
+            () => {
+                removePlugin(randomPlugin);
+                showToast(`Plugin "${randomPlugin}" removed!`, { type: "danger" });
+            },
+            "Proceed",
+            "Cancel"
+        );
+    }
+};
+
+// Plugin start and stop logic
 export const onLoad = () => {
-  registerSettings("Russian Roulette", Settings);
+    showToast("Russian Roulette Plugin Loaded!", { type: "info" });
 };
 
 export const onUnload = () => {
-  unregisterSettings("Russian Roulette");
+    showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 };
 
-export const playRoulette = () => {
-  const PluginManager = findByProps("removePlugin", "getPlugins");
-
-  if (!PluginManager) {
-    showToast("Error: Plugin manager not found!", { type: "danger" });
-    return;
-  }
-
-  const plugins = Object.keys(PluginManager.getPlugins()).filter(
-    (plugin) => plugin !== "Russian Roulette"
-  );
-
-  if (plugins.length === 0) {
-    showToast("No plugins available to remove!", { type: "warning" });
-    return;
-  }
-
-  const randomIndex = Math.floor(Math.random() * plugins.length);
-  const chosenPlugin = plugins[randomIndex];
-
-  PluginManager.removePlugin(chosenPlugin);
-  showToast(`🔥 Russian Roulette removed: ${chosenPlugin}!`, { type: "danger" });
-};
+// Export the function so you can trigger it from the settings UI
+export { playRussianRoulette };
