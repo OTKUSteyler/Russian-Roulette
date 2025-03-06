@@ -2,7 +2,7 @@ import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
 import { showConfirmationAlert } from "@vendetta/ui/alerts";
-import Settings from "./Settings"; // Ensure Settings is imported correctly
+import Settings from "./Settings"; // ✅ Correct import
 
 export const playRoulette = () => {
     const plugins = Object.keys(listPlugins());
@@ -30,9 +30,9 @@ export const playRoulette = () => {
     }
 };
 
-// Plugin lifecycle
+// ✅ Plugin lifecycle
 export const onLoad = () => showToast("Russian Roulette Plugin Loaded!", { type: "info" });
 export const onUnload = () => showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 
-// ✅ FIX: Make sure Settings is correctly exported!
+// ✅ THIS FIXES SETTINGS BUTTON
 export { Settings };
