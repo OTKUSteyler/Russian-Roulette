@@ -1,6 +1,6 @@
 import { View, Text, Button } from "@vendetta/metro/common";
 import { General } from "@vendetta/ui/components";
-import { playRoulette } from "./index"; // ✅ Correct import
+import { playRoulette } from "./index"; // ✅ Ensure this is correctly imported
 
 const Settings = () => (
     <View>
@@ -9,4 +9,4 @@ const Settings = () => (
     </View>
 );
 
-export default Settings;
+export default Settings; // ✅ Ensure the component is exported
