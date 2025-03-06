@@ -1,19 +1,21 @@
-import { View, Text } from "@vendetta/metro/common";
-import { General } from "@vendetta/ui/components";
-import { playRoulette } from "./index";
+import { useState } from "react";
+import { View, Text, Button } from "@vendetta/metro/common";
+import { playRussianRoulette } from "./index";
 
-const Settings = () => (
-  <View style={{ padding: 10 }}>
-    <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 10 }}>
-      Click below to play Russian Roulette with your plugins!
-    </Text>
-    <General.Button
-      text="🎲 Spin the Roulette!"
-      onPress={playRoulette}
-      style={{ backgroundColor: "#ff4444" }}
-      textStyle={{ color: "#fff" }}
-    />
-  </View>
-);
+const Settings = () => {
+    const [lastRoll, setLastRoll] = useState(null);
+
+    const handleRoll = () => {
+        playRussianRoulette();
+        setLastRoll(Date.now()); // Refresh UI when rolled
+    };
+
+    return (
+        <View>
+            <Text>Press the button to play Russian Roulette with your plugins.</Text>
+            <Button text="Roll the Dice!" onPress={handleRoll} />
+        </View>
+    );
+};
 
 export default Settings;
