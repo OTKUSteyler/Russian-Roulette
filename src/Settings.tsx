@@ -1,6 +1,6 @@
 import { View, Text } from "@vendetta/metro/common";
 import { General } from "@vendetta/ui/components";
-import { playRoulette } from "";
+import { playRoulette } from "./index";
 
 export default function Settings() {
   return (
