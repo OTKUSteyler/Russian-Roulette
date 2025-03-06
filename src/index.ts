@@ -33,13 +33,22 @@ const playRussianRoulette = () => {
 
 // Plugin start and stop logic
 export const onLoad = () => {
-    registerSettings("Russian Roulette", Settings); // Register settings UI
-    showToast("Russian Roulette Plugin Loaded!", { type: "info" });
+    try {
+        registerSettings("RussianRoulette", () => <Settings />);
+        showToast("Russian Roulette Plugin Loaded!", { type: "info" });
+    } catch (err) {
+        console.error("Failed to load settings:", err);
+        showToast("Error loading settings!", { type: "error" });
+    }
 };
 
 export const onUnload = () => {
-    unregisterSettings("Russian Roulette"); // Unregister settings UI
-    showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
+    try {
+        unregisterSettings("RussianRoulette");
+        showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
+    } catch (err) {
+        console.error("Failed to unload settings:", err);
+    }
 };
 
 // Export the function so you can trigger it from the settings UI
