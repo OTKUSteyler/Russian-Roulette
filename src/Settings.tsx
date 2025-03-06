@@ -4,7 +4,9 @@ import { General } from "@vendetta/ui/components";
 export default function Settings() {
     return (
         <View style={{ padding: 10 }}>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>Russian Roulette Settings</Text>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                Russian Roulette Settings
+            </Text>
             <General.Switch 
                 label="Enable Roulette" 
                 value={true} 
