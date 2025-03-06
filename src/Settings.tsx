@@ -1,6 +1,6 @@
 import { View, Text } from "@vendetta/metro/common";
 import { General } from "@vendetta/ui/components";
-import { playRussianRoulette } from "./index";
+import { playRoulette } from "./index";
 
 const Settings = () => (
   <View style={{ padding: 10 }}>
@@ -9,7 +9,7 @@ const Settings = () => (
     </Text>
     <General.Button
       text="🎲 Spin the Roulette!"
-      onPress={playRussianRoulette}
+      onPress={playRoulette}
       style={{ backgroundColor: "#ff4444" }}
       textStyle={{ color: "#fff" }}
     />
