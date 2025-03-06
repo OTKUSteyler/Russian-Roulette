@@ -1,4 +1,3 @@
-import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
 import { showConfirmationAlert } from "@vendetta/ui/alerts";
@@ -40,5 +39,5 @@ export const onUnload = () => {
     showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 };
 
-// ✅ Register Settings
-export { playRoulette, Settings };
+// ✅ Fix: Ensure Settings is properly exported
+export { Settings };
