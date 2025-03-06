@@ -1,9 +1,10 @@
+import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
 import { showConfirmationAlert } from "@vendetta/ui/alerts";
-import Settings from "./Settings"; // ✅ Import Settings
+import Settings from "./Settings"; // Ensure settings are properly imported
 
-// Function to roll the dice and possibly remove a plugin
+// Function to play Russian Roulette
 export const playRoulette = () => {
     const plugins = Object.keys(listPlugins());
     if (plugins.length <= 1) {
@@ -30,7 +31,7 @@ export const playRoulette = () => {
     }
 };
 
-// Plugin start and stop logic
+// Plugin lifecycle functions
 export const onLoad = () => {
     showToast("Russian Roulette Plugin Loaded!", { type: "info" });
 };
@@ -39,5 +40,5 @@ export const onUnload = () => {
     showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 };
 
-// ✅ Fix: Ensure Settings is properly exported
+// Fix: Ensure settings are correctly exported
 export { Settings };
