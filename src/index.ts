@@ -2,7 +2,12 @@ import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
 import { showConfirmationAlert } from "@vendetta/ui/alerts";
-import Settings from "./Settings"; // Ensure this file exists and is valid
+import Settings from "./Settings"; // Ensure this file exists
+
+// Default settings storage
+storage.settings ??= {
+    allowReroll: false, // Example setting
+};
 
 // Function to roll the dice and possibly remove a plugin
 const playRussianRoulette = () => {
@@ -33,15 +38,13 @@ const playRussianRoulette = () => {
 
 // Plugin start logic
 export function onLoad() {
-    registerSettings("Russian Roulette", () => <Settings />);
     showToast("Russian Roulette Plugin Loaded!", { type: "info" });
 }
 
 // Plugin unload logic
 export function onUnload() {
-    registerSettings("Russian Roulette", null); // Unregister settings
     showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 }
 
-// Export the function so it can be used in the settings UI
-export { playRussianRoulette };
+// Export settings and function
+export { playRussianRoulette, Settings };
