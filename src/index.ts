@@ -1,4 +1,3 @@
-import { registerSettings } from "@vendetta/settings";
 import { storage } from "@vendetta/plugin";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
