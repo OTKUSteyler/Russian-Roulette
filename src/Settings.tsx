@@ -1,16 +1,18 @@
-import { View, Text } from "@vendetta/metro/common";
+import { useProxy } from "@vendetta/storage";
+import { storage } from "@vendetta/plugin";
 import { General } from "@vendetta/ui/components";
 
+const { View, Text, Switch } = General;
+
 export default function Settings() {
+    useProxy(storage);
+
     return (
-        <View style={{ padding: 10 }}>
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                Russian Roulette Settings
-            </Text>
-            <General.Switch 
-                label="Enable Roulette" 
-                value={true} 
-                onValueChange={(val) => console.log("Toggled:", val)} 
+        <View>
+            <Text>Enable Russian Roulette?</Text>
+            <Switch
+                value={storage.enabled ?? true}
+                onValueChange={(value) => (storage.enabled = value)}
             />
         </View>
     );
