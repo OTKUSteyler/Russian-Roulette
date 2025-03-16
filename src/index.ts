@@ -3,37 +3,66 @@ import { addSettings } from "@vendetta/ui/settings";
 import { showToast } from "@vendetta/ui/toasts";
 import { removePlugin, listPlugins } from "@vendetta/plugins";
 import { showConfirmationAlert } from "@vendetta/ui/alerts";
-import Settings from "./Settings"; // Ensure this file exists
+import Settings from "./Settings";
 
-// Default settings storage
+// Default settings storage with more configuration options
 storage.settings ??= {
-    allowReroll: false, // Example setting
+    allowReroll: false,
+    excludeSelf: true, // Prevent removing this plugin
+    chanceToRemove: 1, // 1 in 6 chance by default
+    confirmRemoval: true // Whether to show confirmation dialog
 };
 
 // Function to roll the dice and possibly remove a plugin
 const playRussianRoulette = () => {
-    const plugins = Object.keys(listPlugins()); // Get installed plugins
-    if (plugins.length <= 1) {
+    // Get all installed plugins
+    const allPlugins = Object.entries(listPlugins());
+    
+    // Filter out this plugin if excludeSelf is enabled
+    const currentPluginId = (window as any).__VENDETTA_PLUGIN_ID__;
+    const plugins = storage.settings.excludeSelf 
+        ? allPlugins.filter(([id]) => id !== currentPluginId)
+        : allPlugins;
+    
+    // Check if there are enough plugins to play
+    if (plugins.length === 0) {
         showToast("Not enough plugins to play!", { type: "error" });
         return;
     }
-
-    const luckyNumber = Math.floor(Math.random() * 6) + 1; // Roll a number 1-6
-
-    if (luckyNumber === 6) {
-        showToast("You're lucky! No plugin removed.", { type: "success" });
-    } else {
-        const randomPlugin = plugins[Math.floor(Math.random() * plugins.length)];
+    
+    // Roll a number 1-6
+    const luckyNumber = Math.floor(Math.random() * 6) + 1;
+    
+    // Check if the user is lucky (not getting the removal number)
+    if (luckyNumber !== storage.settings.chanceToRemove) {
+        showToast(`You rolled a ${luckyNumber}. You're safe!`, { type: "success" });
+        return;
+    }
+    
+    // Select a random plugin to remove
+    const randomIndex = Math.floor(Math.random() * plugins.length);
+    const [pluginId, pluginInfo] = plugins[randomIndex];
+    
+    const removeSelectedPlugin = () => {
+        try {
+            removePlugin(pluginId);
+            showToast(`Plugin "${pluginInfo.name || pluginId}" removed!`, { type: "danger" });
+        } catch (error) {
+            showToast(`Failed to remove plugin: ${error.message}`, { type: "error" });
+        }
+    };
+    
+    // Show confirmation or remove directly based on settings
+    if (storage.settings.confirmRemoval) {
         showConfirmationAlert(
             "Russian Roulette",
-            `You rolled a ${luckyNumber}. The plugin "${randomPlugin}" will be removed!`,
-            () => {
-                removePlugin(randomPlugin);
-                showToast(`Plugin "${randomPlugin}" removed!`, { type: "danger" });
-            },
+            `You rolled a ${luckyNumber}. The plugin "${pluginInfo.name || pluginId}" will be removed!`,
+            removeSelectedPlugin,
             "Proceed",
             "Cancel"
         );
+    } else {
+        removeSelectedPlugin();
     }
 };
 
@@ -47,7 +76,7 @@ export function onLoad() {
 
 // Plugin unload logic
 export function onUnload() {
-    settingsEntry.remove(); // Remove settings when unloading
+    settingsEntry.remove();
     showToast("Russian Roulette Plugin Unloaded!", { type: "info" });
 }
 
